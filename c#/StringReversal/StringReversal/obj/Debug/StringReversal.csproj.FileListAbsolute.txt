@@ -1,0 +1,12 @@
+C:\Users\Arron\SkyDrive\StringReversal\StringReversal\bin\Debug\StringReversal.exe.config
+C:\Users\Arron\SkyDrive\StringReversal\StringReversal\bin\Debug\StringReversal.exe
+C:\Users\Arron\SkyDrive\StringReversal\StringReversal\bin\Debug\StringReversal.pdb
+C:\Users\Arron\SkyDrive\StringReversal\StringReversal\obj\Debug\StringReversal.csprojResolveAssemblyReference.cache
+C:\Users\Arron\SkyDrive\StringReversal\StringReversal\obj\Debug\StringReversal.exe
+C:\Users\Arron\SkyDrive\StringReversal\StringReversal\obj\Debug\StringReversal.pdb
+F:\SkyDrive\StringReversal\StringReversal\bin\Debug\StringReversal.exe.config
+F:\SkyDrive\StringReversal\StringReversal\obj\Debug\StringReversal.exe
+F:\SkyDrive\StringReversal\StringReversal\obj\Debug\StringReversal.pdb
+F:\SkyDrive\StringReversal\StringReversal\bin\Debug\StringReversal.exe
+F:\SkyDrive\StringReversal\StringReversal\bin\Debug\StringReversal.pdb
+F:\SkyDrive\StringReversal\StringReversal\obj\Debug\StringReversal.csprojResolveAssemblyReference.cache

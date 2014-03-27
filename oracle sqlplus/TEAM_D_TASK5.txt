@@ -1,0 +1,580 @@
+
+--GROUP D Lab 4
+
+--DROP STATEMENTS 
+
+DROP TABLE ChannelPackage CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Schedule CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Survey CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Program CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Channel CASCADE CONSTRAINTS PURGE;  
+DROP TABLE Billing CASCADE CONSTRAINTS PURGE;
+DROP TABLE Subscription CASCADE CONSTRAINTS PURGE;
+DROP TABLE Package CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Supplier CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Customer CASCADE CONSTRAINTS PURGE; 
+DROP TABLE Employee CASCADE CONSTRAINTS PURGE; 
+
+--CREATE STATEMENTS 
+
+CREATE TABLE  Employee
+(
+EmployeeID NUMBER(5) NOT NULL CONSTRAINT Employee_EmployeeID_PK PRIMARY KEY,
+EmployeeFName 	VARCHAR2(40) NOT NULL,
+EmployeeLName 	VARCHAR2(40) NOT NULL,
+HireDate	DATE	NOT NULL
+);
+
+CREATE TABLE  Customer
+(
+CustomerID NUMBER(5) NOT NULL CONSTRAINT Customer_CustomerID_PK PRIMARY KEY,
+FName VARCHAR2(40) NOT NULL,
+LName VARCHAR2(40) NOT NULL,
+Phone VARCHAR2(30) NOT NULL,
+Street VARCHAR2(30),
+City VARCHAR2(30),
+State CHAR(2),
+Zip VARCHAR2(9),
+Email VARCHAR2(60) NOT NULL	UNIQUE,
+SignUp_Date DATE DEFAULT sysdate NOT NULL,
+CustomerStatus CHAR(1) DEFAULT 'A',
+InactiveDate DATE,
+InactiveReason VARCHAR2(150),
+EmployeeID NUMBER(5) NOT NULL,
+CustomerBillingCycle CHAR(1) NOT NULL
+);
+
+CREATE TABLE  Supplier
+(
+SupplierName  VARCHAR(6) NOT NULL CONSTRAINT Supplier_SupplierID_PK PRIMARY KEY,
+Address VARCHAR2(30),
+City VARCHAR2(30),
+State CHAR(2)	DEFAULT 'CA',
+Zip VARCHAR2(9),
+ContactName VARCHAR2(30),
+Phone VARCHAR2(20) NOT NULL
+);
+
+CREATE TABLE  Package
+(
+PackageID NUMBER(5) NOT NULL CONSTRAINT Package_PackageID_PK PRIMARY KEY,
+PackageName VARCHAR2(50) NOT NULL,
+PackagePrice NUMBER(8,2) NOT NULL
+);
+
+CREATE TABLE  Subscription
+(
+SubscriptionID NUMBER(5) NOT NULL CONSTRAINT Subscription_SubscriptionID_PK PRIMARY KEY,
+CustomerID NUMBER(5) NOT NULL,
+PackageID NUMBER(5) NOT NULL,
+StartDate DATE NOT NULL,
+EndDate DATE NOT NULL
+);
+
+CREATE TABLE  Billing
+(
+BillingID NUMBER(5) NOT NULL CONSTRAINT Billing_BillingID_PK PRIMARY KEY,
+BillingDate DATE NOT NULL,
+PaidDate DATE,
+DueAmount NUMBER(8,2) NOT NULL,
+PaidAmount NUMBER(8,2),
+DueDate DATE NOT NULL,
+SubscriptionID NUMBER(5) NOT NULL
+);
+
+
+
+CREATE TABLE  Channel
+(
+ChanNumber NUMBER(2) NOT NULL CONSTRAINT Channel_Channumber_PK PRIMARY KEY,
+Description	VARCHAR2(15)
+);
+
+
+CREATE TABLE  Program
+(
+ProgramID NUMBER(5) NOT NULL CONSTRAINT Program_ProgramID_PK PRIMARY KEY,
+ProgramName VARCHAR2(40) NOT NULL, 
+Rating  VARCHAR2(5)	NOT NULL,
+ProgramLength NUMBER(4),
+ProgramDesc VARCHAR2(150),
+ChanNumber  NUMBER(2)	NOT NULL,
+SupplierName VARCHAR2(6) NOT NULL 
+);
+
+
+CREATE TABLE  Survey
+(
+SurveyID NUMBER(5) NOT NULL CONSTRAINT Survey_SurveyID_PK PRIMARY KEY,
+CustomerID NUMBER(5) NOT NULL,
+ChanNumber NUMBER(2) NOT NULL,
+SurveyDate DATE
+);
+
+CREATE TABLE  Schedule
+(
+ChanNumber NUMBER(2) NOT NULL,
+ProgramID NUMBER(5) NOT NULL,
+ShowTime DATE NOT NULL
+);
+
+--Adding composite primary key for Schedule table
+ALTER TABLE Schedule add CONSTRAINT Schedule_ChanNumber_PK PRIMARY KEY (ChanNumber,ProgramID,ShowTime);
+
+
+CREATE TABLE  ChannelPackage
+(
+ChanNumber NUMBER(2) NOT NULL,
+PackageID NUMBER(5) NOT NULL
+);
+
+--Adding composite primary key for ChannelPackage table
+ALTER TABLE ChannelPackage add CONSTRAINT ChannelPack_ChanNumber_PK PRIMARY KEY (ChanNumber,PackageID);
+
+--ADDING FOREIGN KEY CONSTRAINTS
+
+ALTER TABLE Customer ADD CONSTRAINT Customer_EmployeeID_FK FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID) ON DELETE CASCADE;
+ALTER TABLE Billing ADD CONSTRAINT Billing_SubscriptionID_FK FOREIGN KEY (SubscriptionID) REFERENCES Subscription(SubscriptionID) ON DELETE CASCADE;
+ALTER TABLE Subscription ADD CONSTRAINT Subscription_CustomerID_FK FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE;
+ALTER TABLE Subscription ADD CONSTRAINT Subscription_PackageID_FK FOREIGN KEY (PackageID) REFERENCES Package(PackageID) ON DELETE CASCADE;
+ALTER TABLE Program ADD CONSTRAINT Program_ChanNumber_FK FOREIGN KEY (ChanNumber) REFERENCES Channel(ChanNumber) ON DELETE CASCADE;
+ALTER TABLE Program ADD CONSTRAINT Program_SupplierName_FK FOREIGN KEY (SupplierName) REFERENCES Supplier(SupplierName) ON DELETE CASCADE;
+ALTER TABLE Survey ADD CONSTRAINT Survey_CustomerID_FK FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID) ON DELETE CASCADE;
+ALTER TABLE Survey ADD CONSTRAINT Survey_ChanNumber_FK FOREIGN KEY (ChanNumber) REFERENCES Channel(ChanNumber) ON DELETE CASCADE;
+ALTER TABLE Schedule ADD CONSTRAINT Schedule_ChanNumber_FK FOREIGN KEY (ChanNumber) REFERENCES Channel(ChanNumber) ON DELETE CASCADE;
+ALTER TABLE Schedule ADD CONSTRAINT Schedule_ProgramID_FK FOREIGN KEY (ProgramID) REFERENCES Program(ProgramID) ON DELETE CASCADE;
+ALTER TABLE ChannelPackage ADD CONSTRAINT ChannelPackage_ChanNumber_FK FOREIGN KEY (ChanNumber) REFERENCES Channel(ChanNumber) ON DELETE CASCADE;
+ALTER TABLE ChannelPackage ADD CONSTRAINT ChannelPackage_PackageID_FK FOREIGN KEY (PackageID) REFERENCES Package(PackageID) ON DELETE CASCADE;
+
+
+ALTER TABLE Customer add CONSTRAINT Customer_CustomerStatus_CC CHECK (CustomerStatus IN ('A', 'I'));
+ALTER TABLE Customer add CONSTRAINT Customer_CustomerBC_CC CHECK (CustomerBillingCycle IN ('A', 'B'));
+ALTER TABLE Supplier ADD CONSTRAINT supplier_Suppliername_cc CHECK(SupplierName IN ('CBS', 'NBC', 'ABC', 'FOX', 'WARNER'));
+ALTER TABLE Program ADD CONSTRAINT program_rating_cc CHECK(Rating IN ('G', 'PG', 'PG-13', 'R', 'M'));
+ALTER TABLE Channel ADD CONSTRAINT channel_channum_cc CHECK(ChanNumber IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10));
+ALTER TABLE Channel ADD CONSTRAINT channel_description_cc CHECK(Description IN ('MOVIES', 'NEWS', 'LIFESTYLE', 'DOCUMENTARY', 'SPORTS'));
+ALTER TABLE Package ADD CONSTRAINT package_packagename_cc CHECK(PackageName IN ('MOVIES GALORE', 'NEWS GLOBE', 'TOTAL WATCHER', 'COUCH POTATO'));
+ALTER TABLE Package ADD CONSTRAINT package_packageprice_cc CHECK(PackagePrice IN (30.00, 40.00, 50.00));
+
+
+--INSERT STATEMENTS
+
+--For Employee
+INSERT INTO EMPLOYEE
+VALUES (00001, 'Darryl ', 'Agustin', '01-JAN-08');
+INSERT INTO EMPLOYEE
+VALUES (00002, 'Nicholas', 'Anfeldt', '15-FEB-08');
+INSERT INTO EMPLOYEE
+VALUES (00003, 'David', 'Dobrowolski', '21-MAR-09');
+INSERT INTO EMPLOYEE
+VALUES (00004, 'Robert', 'Robinson', '01-NOV-09');
+INSERT INTO EMPLOYEE
+VALUES (00005, 'Arron', 'Thornton', '09-JAN-05');
+
+INSERT INTO CUSTOMER
+VALUES(1, 'John', 'Smith', '3121234567', '1313 Mockingbird Lane', 'Chicago', 'IL', 60601, 'jsmith@gmail.com','15-JAN-2007', 'A', '01-JAN-2014', 'Removed a favorite program.', '00001', 'A');
+INSERT INTO CUSTOMER
+VALUES(2, 'Jackie', 'Graham', '7184565433', '105 Becon Court', 'Brooklyn', 'NY', 11234,'jgraham@yahoo.com', '21-JUN-2007', 'A', '02-FEB-2013', 'Promotion ended.', '00002', 'B');
+INSERT INTO CUSTOMER
+VALUES(3, 'Jennifer', 'Williams', '7321234567', '1522 Stanford Drive', 'Middletown', 'NJ', 07730,'jwilliams@gmail.com', '03-Mar-2013','A', '19-NOV-2013', 'Favorite series ended', '00003', 'B');
+INSERT INTO CUSTOMER
+VALUES(4, 'Mary', 'Jameson', '3054865544', '1164 Morning Glory Circle', 'Miami', 'FL', 33124,'mjameson@yahoo.com', '25-FEB-2008','A', '04-APR-2013', 'Cutting back on TV.', '00004', 'A');
+INSERT INTO CUSTOMER
+VALUES(5, 'Tony', 'Wilson', '2125457722',  '500 Madison Ave', 'New York', 'NY', 10026,'twilson@hotmail.com', '15-MAY-2008','A', '05-MAY-2013', 'Removed a favorite program.', '00005', 'A');
+INSERT INTO CUSTOMER
+VALUES (6, 'Joseph','Thomas', '3124367856', '2400 Brick Ln.', 'Laurel', 'IN', 47024, 'jthomas@hotmail.com', '04-JAN-2014', 'A', NULL, NULL,'00001', 'B');
+INSERT INTO CUSTOMER
+VALUES (7, 'Roger', 'Breton', '4058347529', '317 S. Elm St.', 'Glenwood', 'IL', 53821, 'rbreton@gmail.com', '23-DEC-2013', 'A', NULL, NULL, '00003', 'A');
+INSERT INTO CUSTOMER
+VALUES (8, 'George', 'Baxter', '7656982776', '21598 Kokomo Hill Rd.', 'Johnsonville', 'KY', 12345, 'gbaxter@yahoo.com', '16-OCT-2010', 'A', NULL, NULL, '00002', 'A');
+INSERT INTO CUSTOMER
+VALUES(9, 'Johnson', 'Jane', '3121234567', '14301 Caliber Dr.', 'Oklahoma City', 'OK', 73134, 'jJohnson@gmail.com','05-JAN-2005', 'A', '01-JAN-2014', 'Lost her job.', '00001', 'A');
+INSERT INTO CUSTOMER
+VALUES(10, 'Jackie', 'Rivera', '9705262199', '88 Inverness Circle', 'Centennial', 'CO', 80112,'j_Rivera@yahoo.com', '21-JUN-2008', 'A', '12-FEB-2013', 'Started school full-time.', '00002', 'B');
+INSERT INTO CUSTOMER
+VALUES(11, 'Alex', 'Martin', '7136223492', '13430 Northwest Highway', 'Houston', 'TX', 77040,'Alex_Martin@gmail.com', '13-Mar-2011','A', '09-NOV-2012', 'Favorite series ended', '00003', 'B');
+INSERT INTO CUSTOMER
+VALUES(12, 'Mary', 'Stewart', '3033081330', '1331 17th St.', 'Denver', 'CO', 80202,'mstewart12@aol.com', '05-FEB-2009','A', '14-APR-2012', 'Cutting back on TV.', '00004', 'A');
+INSERT INTO CUSTOMER
+VALUES(13, 'Tony', 'Adams', '3033081590',  '1700 Lincoln St.', 'Devnver', 'CO', 80203,'tadams77@hotmail.com', '10-MAY-2009','A', '05-MAY-2012', 'Removed a favorite channel.', '00003', 'A');
+INSERT INTO CUSTOMER
+VALUES (14, 'Mark', 'Jackson', '7656981158', '202 Blueberry Hill Rd.', 'Johnsonville', 'KY', 12345, 'MadMark@yahoo.com', '12-OCT-2011', 'A', NULL, NULL, '00002', 'A');
+INSERT INTO CUSTOMER
+VALUES (15, 'Rick', 'Brett', '4053586325', '3 S. Johnson St.', 'Burridge', 'IL', 53821, 'rbrett@gmail.com', '20-DEC-2012', 'A', NULL, NULL, '00003', 'A');
+INSERT INTO CUSTOMER
+VALUES(16, 'Troy', 'Bennett', '3038324633',  '17 NW Highway', 'Devnver', 'CO', 80205,'Big_Troy@hotmail.com', '18-MAY-2008','A', '15-MAY-2012', 'Removed a favorite channel.', '00005', 'A');
+INSERT INTO CUSTOMER
+VALUES(17, 'Joshua', 'Newton', '8168087614',  '4057 Big Elm', 'Overland Park', 'MO', 64110,'SirJoshNewton@hotmail.com', '13-MAY-2010','A', '02-Jan-2012', 'Removed a favorite channel.', '00005', 'A');
+INSERT INTO CUSTOMER
+VALUES (18, 'Tiffany', 'Sandoval', '8172533337', '920 Loving Acres Rd.', 'Euless', 'TX', 76039, 'Tiff_Sandoval@ymail.com', '12-NOV-2010', 'A', NULL, NULL, '00002', 'A');
+INSERT INTO CUSTOMER
+VALUES (19, 'Barbara', 'Guerrero', '9146187750', '59 Taylor Street', 'New York', 'NY', 10011, 'BG_Barb@aol.com', '16-JAN-2010', 'A', NULL, NULL, '00002', 'A');
+INSERT INTO CUSTOMER
+VALUES(20, 'Paul', 'Andrews', '9062345688', '2565 Railroad St.', 'Marquette', 'MI', 49855,'Mr_Paul_A@aol.com', '05-APR-2009','A', '14-MAY-2012', 'Moving.', '00004', 'A');
+INSERT INTO CUSTOMER
+VALUES (21, 'Rob', 'Robinson', '5349750032', '2776 Elm Grove St.', 'Connersville', 'IN', 42045, 'rrobinson12@hotmial.com', '12-DEC-2007', 'A', '25-NOV-14', 'Moving.', '00003', 'B');
+INSERT INTO CUSTOMER
+VALUES(22, 'Roberta', 'Whelchel', '7137609950', '2094 Michael St.', 'Sugar Land', 'TX', 77478,'Sook1929@gmail.com', '15-DEC-2009','A', '14-MAR-2012', 'Cutting back on TV.', '00004', 'A');
+INSERT INTO CUSTOMER
+VALUES(23, 'Katharina', 'Johnson', '8474659845', '3416 Johnstown Rd.', 'Wheeling', 'IL', 60090,'MrsKatharina@aol.com', '05-SEP-2009','A', '14-APR-2012', 'Cutting the cord.', '00001', 'A');
+INSERT INTO CUSTOMER
+VALUES(24, 'Romona', 'Bishiop', '2028841307', '2670 School St.', 'Washington', 'DC', 20009,'RomonaBB33@aol.com', '05-OCT-2010','A', '12-JUN-2011', 'Moving outside covered cable zone.', '00004', 'A');
+
+--For Supplier Table
+INSERT INTO SUPPLIER
+VALUES ('NBC','10880 Wilshire Blvd. #1200','Los Angeles','CA','90024','Jeff King','(310)369-5231');
+INSERT INTO SUPPLIER
+VALUES ('ABC','888 S. Figueroa St. Ste.320','Los Angeles','CA','90017','Jack Caverisi','(310)840-9966');
+INSERT INTO SUPPLIER
+VALUES ('FOX','10960 Wilshire Blvd.','Los Angeles','CA','90024','Janis Carmikel','(310)235-5233');
+INSERT INTO SUPPLIER 
+VALUES ('CBS','51 W. 52nd St.','New York City','NY','10019','John Jones','(212)975-4321');
+INSERT INTO SUPPLIER
+VALUES ('WARNER','3701 W. Oak St.','Burbank','CA','91505','Simon Philips','(310)532-6588');
+
+--For Package Table
+INSERT INTO Package VALUES(1, 'MOVIES GALORE', 30.00);
+INSERT INTO Package VALUES(2, 'NEWS GLOBE', 30.00);
+INSERT INTO Package VALUES(3, 'TOTAL WATCHER', 40.00);
+INSERT INTO Package VALUES(4, 'COUCH POTATO', 50.00);
+
+--For subscription table
+INSERT INTO subscription
+VALUES(00001, 1, 1,'02-JAN-09', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00002, 2, 2,'22-MAR-04', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00003, 3, 3,'12-DEC-10', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00004, 4, 4,'20-NOV-12', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00005, 5, 2,'05-AUG-08', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00006, 6, 3,'05-JUN-13', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00007, 7, 4,'05-APR-09', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00008, 8, 1,'05-SEP-10', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00009, 9, 1,'02-JAN-09', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00010, 10, 2,'22-MAR-04', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00011, 11, 3,'12-DEC-10', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00012, 12, 4,'20-NOV-12', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00013, 13, 2,'05-AUG-08', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00014, 14, 3,'05-JUN-13', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00015, 15, 4,'05-APR-09', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00016, 16, 1,'05-SEP-10', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00017, 17, 1,'02-JAN-09', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00018, 18, 2,'22-MAR-04', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00019, 19, 3,'12-DEC-10', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00020, 20, 4,'20-NOV-12', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00021, 21, 2,'05-AUG-08', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00022, 22, 3,'05-JUN-13', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00023, 23, 4,'05-APR-09', '01-JAN-15');
+INSERT INTO subscription
+VALUES(00024, 24, 1,'05-SEP-10', '01-JAN-15');
+
+
+
+--For billing table
+INSERT INTO billing
+VALUES(00001, '01-JAN-14', '01-FEB-14', 29.99, 29.99, '01-FEB-14', 00001);
+INSERT INTO billing
+VALUES(00002, '02-JAN-14', '02-FEB-14', 29.99, 29.99, '02-FEB-14', 00002);
+INSERT INTO billing
+VALUES(00003, '03-JAN-14', NULL, 29.99, 00.00, '03-FEB-14', 00003);
+INSERT INTO billing
+VALUES(00004, '04-JAN-14', NULL, 29.99, 00.00, '04-FEB-14', 00004);
+INSERT INTO billing
+VALUES(00005, '05-JAN-14', '05-FEB-14', 29.99, 29.99, '05-FEB-14', 00005);
+INSERT INTO BILLING
+VALUES (00006, '01-FEB-14', NULL, 29.99, 00.00, '05-DEC-13', 00006);
+INSERT INTO BILLING
+VALUES (00007, '02-FEB-14', NULL, 29.99, 00.00, '01-JAN-14', 00007);
+INSERT INTO BILLING
+VALUES (00008, '03-FEB-14', NULL, 29.99, 00.00, '20-DEC-13', 00008);
+INSERT INTO billing
+VALUES(00009, '04-JAN-14', '01-FEB-14', 29.99, 29.99, '01-FEB-14', 00009);
+INSERT INTO billing
+VALUES(00010, '05-JAN-14', '02-FEB-14', 29.99, 29.99, '02-FEB-14', 00010);
+INSERT INTO billing
+VALUES(00011, '06-JAN-14', NULL, 29.99, 00.00, '03-FEB-14', 00011);
+INSERT INTO billing
+VALUES(00012, '01-JAN-14', NULL, 29.99, 00.00, '04-FEB-14', 00012);
+INSERT INTO billing
+VALUES(00013, '02-JAN-14', '05-FEB-14', 29.99, 29.99, '05-FEB-14', 00013);
+INSERT INTO BILLING
+VALUES (00014, '03-FEB-14', NULL, 29.99, 00.00, '05-DEC-13', 00014);
+INSERT INTO BILLING
+VALUES (00015, '01-FEB-14', '20-FEB-14', 29.99, 00.00, '01-JAN-14', 00015);
+INSERT INTO BILLING
+VALUES (00016, '01-FEB-14', NULL, 29.99, 00.00, '20-DEC-13', 00016);
+INSERT INTO billing
+VALUES(00017, '01-JAN-14', '01-FEB-14', 29.99, 29.99, '01-FEB-14', 00017);
+INSERT INTO billing
+VALUES(00018, '02-JAN-14', '02-FEB-14', 29.99, 29.99, '02-FEB-14', 00018);
+INSERT INTO billing
+VALUES(00019, '03-JAN-14', '20-FEB-14', 29.99, 29.99, '03-FEB-14', 00019);
+INSERT INTO billing
+VALUES(00020, '04-JAN-14', NULL, 29.99, 00.00, '04-FEB-14', 00020);
+INSERT INTO billing
+VALUES(00021, '05-JAN-14', '05-FEB-14', 29.99, 29.99, '05-FEB-14', 00021);
+INSERT INTO BILLING
+VALUES (00022, '01-FEB-14', NULL, 29.99, 00.00, '05-DEC-13', 00022);
+INSERT INTO BILLING
+VALUES (00023, '01-FEB-14', NULL, 29.99, 00.00, '01-JAN-14', 00023);
+INSERT INTO BILLING
+VALUES (00024, '01-FEB-14', NULL, 29.99, 00.00, '20-DEC-13', 00024);
+
+--For Channel Table
+INSERT INTO Channel VALUES(1, 'MOVIES');
+INSERT INTO Channel VALUES(2, 'NEWS');
+INSERT INTO Channel VALUES(3, 'LIFESTYLE');
+INSERT INTO Channel VALUES(4, 'DOCUMENTARY');
+INSERT INTO Channel VALUES(5, 'SPORTS');
+INSERT INTO Channel VALUES(6, 'MOVIES');
+INSERT INTO Channel VALUES(7, 'NEWS');
+INSERT INTO Channel VALUES(8, 'LIFESTYLE');
+INSERT INTO Channel VALUES(9, 'DOCUMENTARY');
+INSERT INTO Channel VALUES(10, 'SPORTS');
+
+--For Program Table
+INSERT INTO PROGRAM
+VALUES (00001,'Thunder Dome','R', 90,'Post apocalyptic living is never harder as you enter the Thunder Dome',01,'ABC');
+INSERT INTO PROGRAM
+VALUES (00002,'Romance from Afar','M', 110,'The relationship between a man and his wife is threatened when an old flame returns to the mans life',02,'FOX');
+INSERT INTO PROGRAM
+VALUES (00003,'Action News','PG-13', 60,'Get the latest local, national, and global news.',03,'WARNER');
+INSERT INTO PROGRAM
+VALUES (00004,'Political Agenda', 'PG-13', 60,'Get up-to-the-minute political news.',04,'NBC');
+INSERT INTO PROGRAM
+VALUES (00005,'Modern Living','PG-13', 30,'Check out the latest styles for your home.',05,'CBS');
+INSERT INTO PROGRAM
+VALUES (00006,'Hot Rod Garage','PG-13', 30,'Hang out with our expert mechanics as they build their own car.',06,'WARNER');
+INSERT INTO PROGRAM
+VALUES (00007,'Into the Deep Blue Sea','PG', 105,'Set sail with our adventurers as they track and observe marine wildlife.',07,'NBC');
+INSERT INTO PROGRAM
+VALUES (00008,'World at War','R', 90,'Take a look back in time during World War I.',08,'FOX');
+INSERT INTO PROGRAM
+VALUES (00009,'Sports World','PG-13',60,'Get the latest news in the sports world.',09,'CBS');
+INSERT INTO PROGRAM
+VALUES (00010,'International Figure Skating','PG',60,'The longest hour and 30 minutes of your life.',10,'ABC');
+INSERT INTO PROGRAM
+VALUES (00011,'Half Full House','PG', 30,'In a family household, crazy antics ensue',03,'ABC');
+INSERT INTO PROGRAM
+VALUES (00012,'The Way It Was','PG', 90,'Old friends reuinte for a fun vacation',01,'FOX');
+INSERT INTO PROGRAM
+VALUES (00013,'Local News','PG', 30,'Local News when you need it',03,'WARNER');
+INSERT INTO PROGRAM
+VALUES (00014,'Time to make...', 'PG', 30,'Learn how various household items are made',04,'NBC');
+INSERT INTO PROGRAM
+VALUES (00015,'This New House','PG', 30,'Home improvement at its best',05,'CBS');
+INSERT INTO PROGRAM
+VALUES (00016,'Slow and Spiteful','PG-13', 60,'Those left in the dust plot revenge',06,'WARNER');
+INSERT INTO PROGRAM
+VALUES (00017,'Around the World','PG', 105,'One mans endeavors while traveling the globe.',07,'NBC');
+INSERT INTO PROGRAM
+VALUES (00018,'Terror War','R', 90,'In-depth news reguarding the war.',08,'FOX');
+INSERT INTO PROGRAM
+VALUES (00019,'Sports Recall','PG',60,'This week in sports',09,'CBS');
+INSERT INTO PROGRAM
+VALUES (00020,'Amazing Gumball','PG',30,'The 30 minutes of your life.',10,'ABC');
+INSERT INTO PROGRAM
+VALUES (00021,'World At War','PG-13', 90,'When the world is invaded, opposites must attract.',05,'CBS');
+INSERT INTO PROGRAM
+VALUES (00022,'Hot Rod Dog','PG-13', 30,'The wonderful stunts of Hot Rod Dog.',06,'WARNER');
+INSERT INTO PROGRAM
+VALUES (00023,'Wild Blue Wonder','PG', 105,'Wild ocean life.',07,'NBC');
+INSERT INTO PROGRAM
+VALUES (00024,'Sports Future','PG', 60,'Talks of sports yet to come',08,'FOX');
+INSERT INTO PROGRAM
+VALUES (00025,'Trek Wars','PG-13',60,'When worlds collide...',09,'CBS');
+
+
+--For Survey Table
+INSERT INTO Survey VALUES (1, 1, 2, to_date('2010/09/21 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (2, 2, 4, to_date('2010/10/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (3, 3, 3, to_date('2010/10/01 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (4, 4, 5, to_date('2012/07/18 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (5, 5, 8, to_date('2011/03/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (6, 6, 10, to_date('2014/01/06 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (7, 7, 6, to_date('2013/12/28 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (8, 8, 1, to_date('2010/10/20 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (9, 9, 7, to_date('2005/01/10 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (10, 10, 8, to_date('2008/06/25 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (11, 11, 3, to_date('2011/03/20 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (12, 12, 1, to_date('2009/02/10 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (13, 13, 1, to_date('2009/05/20 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (14, 14, 1, to_date('2011/10/18 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (15, 15, 2, to_date('2011/10/18 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (16, 16, 4, to_date('2008/05/20 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (17, 17, 5, to_date('2010/05/29 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (18, 18, 4, to_date('2010/11/17 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (19, 19, 6, to_date('2010/01/24 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (20, 20, 3, to_date('2009/04/09 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (21, 21, 9, to_date('2011/03/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (22, 22, 9, to_date('2011/03/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (23, 23, 4, to_date('2011/03/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+INSERT INTO Survey VALUES (24, 24, 1, to_date('2011/03/11 00:10:00', 'yyyy/mm/dd hh24:mi:ss'));
+
+
+
+--For Schedule table
+INSERT INTO Schedule VALUES (5, 1, to_date('2012/01/25 00:01:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (7, 2, to_date('2012/01/25 12:30:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 3, to_date('2012/01/25 02:45:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (4, 4, to_date('2012/01/25 04:40:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (6, 5, to_date('2012/01/25 13:01:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 6, to_date('2012/01/25 15:50:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (9, 7, to_date('2012/01/25 16:01:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 8, to_date('2012/01/25 08:10:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (6, 1, to_date('2012/01/26 12:01:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (8, 2, to_date('2012/01/26 01:40:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 3, to_date('2012/01/26 08:25:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (3, 4, to_date('2012/01/26 04:30:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (5, 5, to_date('2012/01/26 13:10:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (1, 6, to_date('2012/01/26 15:40:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (10,7, to_date('2012/01/26 06:08:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (2, 8, to_date('2012/01/26 22:15:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (3, 9, to_date('2012/01/27 13:10:00', 'yyyy/mm/dd hh24:mi:ss')); 
+INSERT INTO Schedule VALUES (4, 10, to_date('2012/01/27 15:40:00', 'yyyy/mm/dd hh24:mi:ss')); 
+
+
+--For ChannelPackage table
+INSERT INTO ChannelPackage VALUES (1,1);
+INSERT INTO ChannelPackage VALUES (2,1);
+INSERT INTO ChannelPackage VALUES (3,1);
+INSERT INTO ChannelPackage VALUES (6,1);
+INSERT INTO ChannelPackage VALUES (7,1);
+INSERT INTO ChannelPackage VALUES (9,1);
+INSERT INTO ChannelPackage VALUES (1,2);
+INSERT INTO ChannelPackage VALUES (3,2);
+INSERT INTO ChannelPackage VALUES (4,2);
+INSERT INTO ChannelPackage VALUES (6,2);
+INSERT INTO ChannelPackage VALUES (7,2);
+INSERT INTO ChannelPackage VALUES (9,2);
+INSERT INTO ChannelPackage VALUES (1,3);
+INSERT INTO ChannelPackage VALUES (2,3);
+INSERT INTO ChannelPackage VALUES (3,3);
+INSERT INTO ChannelPackage VALUES (6,3);
+INSERT INTO ChannelPackage VALUES (7,3);
+INSERT INTO ChannelPackage VALUES (8,3);
+INSERT INTO ChannelPackage VALUES (9,3);
+INSERT INTO ChannelPackage VALUES (10,3);
+INSERT INTO ChannelPackage VALUES (1,4);
+INSERT INTO ChannelPackage VALUES (2,4);
+INSERT INTO ChannelPackage VALUES (3,4);
+INSERT INTO ChannelPackage VALUES (4,4);
+INSERT INTO ChannelPackage VALUES (5,4);
+INSERT INTO ChannelPackage VALUES (6,4);
+INSERT INTO ChannelPackage VALUES (7,4);
+INSERT INTO ChannelPackage VALUES (8,4);
+INSERT INTO ChannelPackage VALUES (9,4);
+INSERT INTO ChannelPackage VALUES (10,4);
+
+COMMIT;
+
+--SELECT STATEMENTS
+SELECT * FROM employee;
+SELECT * FROM customer;
+SELECT * FROM supplier;
+SELECT * FROM package;
+SELECT * FROM subscription;
+SELECT * FROM billing;
+SELECT * FROM channel;
+SELECT * FROM program;
+SELECT * FROM survey;
+SELECT * FROM schedule;
+SELECT * FROM channelpackage;
+
+SELECT * FROM customer
+WHERE inactivereason = 'BILL NOT PAID';
+
+Update Customer
+Set InactiveDate = sysdate,
+EmployeeID = 1, --assuming this employee has marked him inactive
+InactiveReason = 'BILL NOT PAID'
+WHERE CustomerID IN(
+Select c.CustomerID FROM 
+Customer c, Subscription s, Billing b
+WHERE c.CustomerID = s.CustomerID
+AND b.SubscriptionID = s.SubscriptionID
+AND b.PaidDate is null
+AND b.DueDate < (select sysdate - 30 from dual)
+);
+
+COMMIT;
+
+SELECT * FROM customer
+WHERE inactivereason = 'BILL NOT PAID';
+
+--Report Statements
+
+--1
+SELECT a.channumber AS "Channel Number", 
+a.ProgramName AS "Program Name", 
+a.Rating, a.SupplierName AS "Supplier", b.showtime
+FROM Program a, Schedule b 
+WHERE a.ProgramID=b.ProgramID 
+AND trunc(b.ShowTime) =  to_date('25-jan-12', 'dd-MON-yy');
+
+--2
+SELECT p.channumber "Channel Number", sch.showtime "Show Time", p.programname "Program Name", p.Rating
+FROM channelpackage cp, schedule sch, program p, package pk
+WHERE p.programid = sch.programid
+AND p.channumber = cp.channumber
+AND cp.packageid = pk.packageid
+AND pk.packageid = 2
+AND trunc(sch.ShowTime) =  to_date('25-jan-12', 'dd-MON-yy');
+
+--3
+SELECT (c.fname||' '||c.lname) "Customer Name",
+c.Phone as "Customer Phone",
+(c.street||', '||c.city||', '||c.state) "Address",
+s.channumber "Favorite Channel",
+b.billingdate as "Billing Date" 
+FROM Customer c
+	LEFT OUTER JOIN Survey s on s.CustomerID = c.CustomerID 
+	LEFT OUTER JOIN Channel ch on ch.ChanNumber = s.ChanNumber
+	LEFT OUTER JOIN Subscription sb on sb.CustomerID = c.CustomerID
+	LEFT OUTER JOIN Billing b on b.SubscriptionID = sb.SubscriptionID
+	WHERE to_date(c.SIGNUP_DATE, 'yyyy/mm/dd')  = to_date('23-DEC-13', 'yyyy/mm/dd')
+ORDER BY c.FName;
+
+--4
+SELECT (c.fname||' '||c.lname) "Customer Name",
+c.Phone as "Customer Phone",
+c.email as "Email",
+c.inactivereason "Inactive Reason",
+(e.employeefname||' '||e.employeelname) "Employee Name"
+FROM customer c, employee e
+WHERE c.employeeid = e.employeeid
+AND trunc(c.inactivedate) =  to_date('01-jan-14', 'dd-MON-yy');
+
+--5
+select description as "Channel Name", channel.chanNumber as " Channel Number", count(survey.chanNumber) as "No. of Custs Fav Chan"
+from channel join survey
+on channel.chanNumber = survey.chanNumber
+group by channel.chanNumber, channel.description
+order by channel.chanNumber;
+
+--6
+select packagename as "Package Type", to_char(packageprice, '$999999999.90') as "Package Price", count(package.packageid) as "No. Packs Sold", to_char(sum(packageprice), '$9999999.99') as "Total Sales"
+from package join subscription
+on package.packageid = subscription.packageid
+where startdate = '02-JAN-09'
+group by packagename, packageprice;

@@ -1,0 +1,256 @@
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-Arron Thornton-_-_-_-_-_-_-_-_-_-_-_-_
+
+	                 Type:  Hourly
+
+	                 Name:  Arron Thornton
+
+	               Gender:  M
+
+	           Dependents:  3
+
+
+
+***************** Benefits Information *****************
+
+     Health Insurance Company:  Dshs
+
+        Life Insurance Amount:  $100,000.00
+
+                Vacation Days:  5
+
+	             Category:  Full Time
+
+	                Hours:  40
+
+	                Wages:  $30.00
+
+	        Annual Salary:  $57,600.00
+
+	        Weekly Salary:  $1,200.00
+
+	              Net Pay:  $984.00
+
+
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-Kristal Willi-_-_-_-_-_-_-_-_-_-_-_-_
+
+	                 Type:  Salary
+
+	                 Name:  Kristal Willi
+
+	               Gender:  F
+
+	           Dependents:  3
+
+
+
+***************** Benefits Information *****************
+
+     Health Insurance Company:  Dshs
+
+        Life Insurance Amount:  $200,000.00
+
+                Vacation Days:  1
+
+	                Level:  1
+
+	        Annual Salary:  $77,000.00
+
+	        Weekly Salary:  $1,480.77
+
+	              Net Pay:  $1,080.96
+
+
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-Mary Noia-_-_-_-_-_-_-_-_-_-_-_-_
+
+	                 Type:  Hourly
+
+	                 Name:  Mary Noia
+
+	               Gender:  F
+
+	           Dependents:  4
+
+
+
+***************** Benefits Information *****************
+
+     Health Insurance Company:  Blue Cross
+
+        Life Insurance Amount:  $175,000.00
+
+                Vacation Days:  24
+
+	             Category:  Full Time
+
+	                Hours:  40
+
+	                Wages:  $52.00
+
+	        Annual Salary:  $99,840.00
+
+	        Weekly Salary:  $2,080.00
+
+	              Net Pay:  $1,705.60
+
+
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-Sue Smith-_-_-_-_-_-_-_-_-_-_-_-_
+
+	                 Type:  Salary
+
+	                 Name:  Sue Smith
+
+	               Gender:  F
+
+	           Dependents:  2
+
+
+
+***************** Benefits Information *****************
+
+     Health Insurance Company:  Blue Cross
+
+        Life Insurance Amount:  $30,000.00
+
+                Vacation Days:  15
+
+	                Level:  2
+
+	        Annual Salary:  $120,000.00
+
+	        Weekly Salary:  $2,307.69
+
+	              Net Pay:  $1,684.62
+
+
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-Arron Thornton-_-_-_-_-_-_-_-_-_-_-_-_
+
+	                 Type:  Hourly
+
+	                 Name:  Arron Thornton
+
+	               Gender:  M
+
+	           Dependents:  3
+
+
+
+***************** Benefits Information *****************
+
+     Health Insurance Company:  Blue Cross
+
+        Life Insurance Amount:  $100,000.00
+
+                Vacation Days:  12
+
+	             Category:  Full Time
+
+	                Hours:  40
+
+	                Wages:  $53.00
+
+	        Annual Salary:  $101,760.00
+
+	        Weekly Salary:  $2,120.00
+
+	              Net Pay:  $1,738.40
+
+
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-Hobo Tron-_-_-_-_-_-_-_-_-_-_-_-_
+
+	                 Type:  Salary
+
+	                 Name:  Hobo Tron
+
+	               Gender:  F
+
+	           Dependents:  3
+
+
+
+***************** Benefits Information *****************
+
+     Health Insurance Company:  Blue Cross
+
+        Life Insurance Amount:  $600,000.00
+
+                Vacation Days:  23
+
+	                Level:  2
+
+	        Annual Salary:  $120,000.00
+
+	        Weekly Salary:  $2,307.69
+
+	              Net Pay:  $1,684.62
+
+
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-Arron Thornton-_-_-_-_-_-_-_-_-_-_-_-_
+
+	                 Type:  Hourly
+
+	                 Name:  Arron Thornton
+
+	               Gender:  M
+
+	           Dependents:  4
+
+
+
+***************** Benefits Information *****************
+
+     Health Insurance Company:  N/A
+
+        Life Insurance Amount:  $0.00
+
+                Vacation Days:  0
+
+	             Category:  1
+
+	                Hours:  50
+
+	                Wages:  $10.00
+
+	        Annual Salary:  $24,000.00
+
+	        Weekly Salary:  $500.00
+
+	              Net Pay:  $410.00
+
+
+
+_-_-_-_-_-_-_-_-_-_-_-_-_-_-Arron Thornton-_-_-_-_-_-_-_-_-_-_-_-_
+
+	                 Type:  Salary
+
+	                 Name:  Arron Thornton
+
+	               Gender:  M
+
+	           Dependents:  5
+
+
+
+***************** Benefits Information *****************
+
+     Health Insurance Company:  Blue Cross
+
+        Life Insurance Amount:  $1,000,000.00
+
+                Vacation Days:  12
+
+	                Level:  2
+
+	        Annual Salary:  $120,000.00
+
+	        Weekly Salary:  $2,307.69
+
+	              Net Pay:  $1,684.62
+
+

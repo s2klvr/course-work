@@ -1,0 +1,12 @@
+C:\Users\Arron\SkyDrive\Palindrome\Palindrome\bin\Debug\Palindrome.exe.config
+C:\Users\Arron\SkyDrive\Palindrome\Palindrome\obj\Debug\Palindrome.csprojResolveAssemblyReference.cache
+C:\Users\Arron\SkyDrive\Palindrome\Palindrome\bin\Debug\Palindrome.exe
+C:\Users\Arron\SkyDrive\Palindrome\Palindrome\bin\Debug\Palindrome.pdb
+C:\Users\Arron\SkyDrive\Palindrome\Palindrome\obj\Debug\Palindrome.exe
+C:\Users\Arron\SkyDrive\Palindrome\Palindrome\obj\Debug\Palindrome.pdb
+F:\SkyDrive\Palindrome\Palindrome\bin\Debug\Palindrome.exe.config
+F:\SkyDrive\Palindrome\Palindrome\obj\Debug\Palindrome.exe
+F:\SkyDrive\Palindrome\Palindrome\obj\Debug\Palindrome.pdb
+F:\SkyDrive\Palindrome\Palindrome\bin\Debug\Palindrome.exe
+F:\SkyDrive\Palindrome\Palindrome\bin\Debug\Palindrome.pdb
+F:\SkyDrive\Palindrome\Palindrome\obj\Debug\Palindrome.csprojResolveAssemblyReference.cache
