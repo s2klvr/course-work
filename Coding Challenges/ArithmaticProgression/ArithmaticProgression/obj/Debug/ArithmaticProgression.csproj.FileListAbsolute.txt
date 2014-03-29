@@ -1,0 +1,5 @@
+C:\Users\Hobotron\course-work\ArithmaticProgression\ArithmaticProgression\bin\Debug\ArithmaticProgression.exe.config
+C:\Users\Hobotron\course-work\ArithmaticProgression\ArithmaticProgression\bin\Debug\ArithmaticProgression.exe
+C:\Users\Hobotron\course-work\ArithmaticProgression\ArithmaticProgression\bin\Debug\ArithmaticProgression.pdb
+C:\Users\Hobotron\course-work\ArithmaticProgression\ArithmaticProgression\obj\Debug\ArithmaticProgression.exe
+C:\Users\Hobotron\course-work\ArithmaticProgression\ArithmaticProgression\obj\Debug\ArithmaticProgression.pdb
