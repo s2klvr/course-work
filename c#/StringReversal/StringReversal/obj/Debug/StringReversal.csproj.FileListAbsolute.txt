@@ -10,3 +10,6 @@ F:\SkyDrive\StringReversal\StringReversal\obj\Debug\StringReversal.pdb
 F:\SkyDrive\StringReversal\StringReversal\bin\Debug\StringReversal.exe
 F:\SkyDrive\StringReversal\StringReversal\bin\Debug\StringReversal.pdb
 F:\SkyDrive\StringReversal\StringReversal\obj\Debug\StringReversal.csprojResolveAssemblyReference.cache
+C:\Users\Hobotron\course-work\C#\StringReversal\StringReversal\bin\Debug\StringReversal.exe.config
+C:\Users\Hobotron\course-work\C#\StringReversal\StringReversal\obj\Debug\StringReversal.exe
+C:\Users\Hobotron\course-work\C#\StringReversal\StringReversal\obj\Debug\StringReversal.pdb

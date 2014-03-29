@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 
 namespace StringReversal
 {
@@ -14,7 +13,6 @@ namespace StringReversal
             Console.WriteLine(StringReverse(input));
             Console.ReadLine();
 
-            Hashtable myH = new Hashtable();
             
         }
 
