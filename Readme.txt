@@ -2,7 +2,9 @@ Welcome all to my page showcasing some of my college course work.
 
 I currently have a few C# program uploaded and my course project in Oracle SQL*Plus.
 
-Yet to come: JAVA, HTML, CSS, JavaScript.
+As I start to close out my current Java course, I will begin uploading my Java projects!
+
+Yet to come: HTML, CSS, JavaScript.
 
 
 
